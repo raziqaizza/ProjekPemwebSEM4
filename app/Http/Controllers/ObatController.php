@@ -32,26 +32,24 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
-        $nama_obat = $request->nama_obat;
-        $kode_obat = $request->kode_obat;
-        $supplier_id = $request->supplier_id;
-        $stok = $request->stok;
-        $harga = $request->harga;
-
-        // Memanggil stored procedure untuk membuat data user
-        $query = "CALL sp_insert_obat(?, ?, ?, ?, ?)";
-        $bindings = [$nama_obat, $kode_obat, $supplier_id, $stok, $harga];
-
-        DB::statement($query, $bindings);
+        Obat::create([
+            'nama_obat' => $request->nama_obat,
+            'kode_obat' => $request->kode_obat,
+            'supplier_id' => $request->supplier_id,
+            'stok' => $request->stok,
+            'harga' => $request->harga
+        ]);
         Alert::success('Obat berhasil ditambah!');
         return redirect('data-obat');
-        // Obat::create([
-        //     'nama_obat' => $request->nama_obat,
-        //     'kode_obat' => $request->kode_obat,
-        //     'supplier_id' => $request->supplier_id,
-        //     'stok' => $request->stok,
-        //     'harga' => $request->harga
-        // ]);
+        // $nama_obat = $request->nama_obat;
+        // $kode_obat = $request->kode_obat;
+        // $supplier_id = $request->supplier_id;
+        // $stok = $request->stok;
+        // $harga = $request->harga;
+        // Memanggil stored procedure untuk membuat data user
+        // $query = "CALL sp_insert_obat(?, ?, ?, ?, ?)";
+        // $bindings = [$nama_obat, $kode_obat, $supplier_id, $stok, $harga];
+        // DB::statement($query, $bindings);
         // return redirect('data-obat');
     }
 
@@ -78,24 +76,23 @@ class ObatController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $ob = Obat::findorfail($id);
+        $ob->update($request->all());
         Alert::success('Data berhasil diubah!');
-        $nama_obat = $request->nama_obat;
-        $kode_obat = $request->kode_obat;
-        $supplier_id = $request->supplier_id;
-        $stok = $request->stok;
-        $harga = $request->harga;
-        DB::statement('CALL sp_update_obat(:p_id, :p_nama_obat, :p_kode_obat, :p_supplier_id, :p_stok, :p_harga)', [
-            'p_id' => $id,
-            'p_nama_obat' => $nama_obat,
-            'p_kode_obat' => $kode_obat,
-            'p_supplier_id' => $supplier_id,
-            'p_stok' => $stok,
-            'p_harga' => $harga
-        ]);
-        // $ob = Obat::findorfail($id);
-        // $ob->update($request->all());
-
         return redirect('data-obat');
+        // $nama_obat = $request->nama_obat;
+        // $kode_obat = $request->kode_obat;
+        // $supplier_id = $request->supplier_id;
+        // $stok = $request->stok;
+        // $harga = $request->harga;
+        // DB::statement('CALL sp_update_obat(:p_id, :p_nama_obat, :p_kode_obat, :p_supplier_id, :p_stok, :p_harga)', [
+        //     'p_id' => $id,
+        //     'p_nama_obat' => $nama_obat,
+        //     'p_kode_obat' => $kode_obat,
+        //     'p_supplier_id' => $supplier_id,
+        //     'p_stok' => $stok,
+        //     'p_harga' => $harga
+        // ]);
     }
 
     /**
@@ -103,11 +100,10 @@ class ObatController extends Controller
      */
     public function destroy(string $id)
     {
-
-        DB::statement('CALL sp_delete_obat(:id)', ['id' => $id]);
+        $ob = Obat::findorfail($id);
+        $ob->delete();
         Alert::success('Obat berhasil dihapus!');
         return back();
-        // $ob = Obat::findorfail($id);
-        // $ob->delete();
+        // DB::statement('CALL sp_delete_obat(:id)', ['id' => $id]);
     }
 }

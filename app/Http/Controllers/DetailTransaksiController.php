@@ -25,7 +25,6 @@ class DetailTransaksiController extends Controller
             ->join('obat', 'detail_transaksi.id', '=', 'obat.id')
             ->select('detail_transaksi.*')
             ->get();
-
         return view('Transaksi.input-transaksi', compact('dataObat', 'dataPegawai', 'transaksi', 'detailTransaksi'));
     }
 
@@ -34,30 +33,19 @@ class DetailTransaksiController extends Controller
     {
         $ob = DB::table('obat')->where('nama_obat', $request->nama_obat)->first();
         $peg = DB::table('pegawai')->where('nama', $request->nama)->first();
+        
         if ($ob && $ob->stok < $request->jumlah) {
             alert()->error('Transaksi Gagal!', 'Stok obat tidak mencukupi. Jumlah obat tersisa ' . $ob->stok);
-
             return redirect()->route('input-transaksi');
         } else if ($request->jumlah <= 0) {
             alert()->error('Transaksi Gagal!', 'Jumlah obat tidak boleh kosong');
-
             return redirect()->route('input-transaksi');
         }
-
-        // $transaksiId = DB::table('transaksi')->insertGetId([
-        //     'nama_pembeli' => $request->nama_pembeli
-        // ]);
-
+        
         $transaksi = Transaksi::create([
             'nama_pembeli' => $request->nama_pembeli
         ]);
-
         $transaksiId = $transaksi->id;
-
-        // Transaksi::create([
-        //     'nama_pembeli' => $request->nama_pembeli
-        // ]);
-
         DB::table('detail_transaksi')->insert([
             'transaksi_id' => $transaksiId,
             'pegawai_id' => $peg->id,
@@ -66,6 +54,9 @@ class DetailTransaksiController extends Controller
         ]);
         Alert::success('Transaksi berhasil ditambah!');
         return redirect('data-transaksi');
+        // $transaksiId = DB::table('transaksi')->insertGetId([
+        //     'nama_pembeli' => $request->nama_pembeli
+        // ]);
     }
 
     /**
@@ -92,7 +83,6 @@ class DetailTransaksiController extends Controller
      */
     public function destroy(string $id)
     {
-
         $ob = DetailTransaksi::findorfail($id);
         $idTransaksiDelete = $ob->transaksi_id;
         $ob->delete();

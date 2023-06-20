@@ -56,8 +56,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <select name="supplier_id" id="supplier_id" class="form-control select2"
                                                 style="width: 100%;">
                                                 <option disabled value>Pilih Supplier</option>
-                                                <option value="{{ $ob->supplier_id }}">
-                                                    {{ $ob->supplier->nama_supplier }}</option>
                                                 @foreach ($supp as $item)
                                                     <option value="{{ $item->id }}">{{ $item->nama_supplier }}
                                                     </option>

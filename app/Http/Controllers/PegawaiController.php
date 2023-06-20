@@ -30,12 +30,12 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        Alert::success('Berhasil menambah pegawai!');
         Pegawai::create([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'tgllhr' => $request->tgllhr
         ]);
+        Alert::success('Berhasil menambah pegawai!');
         return redirect('data-pegawai');
     }
     /**

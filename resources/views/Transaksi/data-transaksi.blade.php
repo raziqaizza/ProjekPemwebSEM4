@@ -45,7 +45,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 style="margin-top: 1rem;">Tambah Transaksi</a>
                         </div>
                         <div class="card-body">
-
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable">
                                     <thead>
@@ -80,10 +79,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
         <!-- /.content-wrapper -->
 
